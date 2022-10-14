@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SubredditModel } from '../subreddit-model';
 import { Router } from '@angular/router';
 import { SubredditService } from '../subreddit.service';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-create-subreddit',
@@ -34,12 +35,14 @@ export class CreateSubredditComponent implements OnInit {
   }
 
   createSubreddit() {
-    this.subredditModel.name = this.createSubredditForm.get('title').value;
-    this.subredditModel.description = this.createSubredditForm.get('description').value;
+    this.subredditModel.name = this.createSubredditForm.get('title')
+    .value;
+    this.subredditModel.description = this.createSubredditForm.get('description')
+    .value;
     this.subredditService.createSubreddit(this.subredditModel).subscribe(data => {
       this.router.navigateByUrl('/list-subreddits');
     }, error => {
-      console.log('Error occurred');
+      throwError(error);
     })
   }
 }
